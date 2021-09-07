@@ -1,0 +1,65 @@
+﻿<Window x:Class="JunTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JunTest" xmlns:oxy="http://oxyplot.org/wpf" xmlns:local1="clr-namespace:JunTest.View"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="1000">
+    <Grid>
+        <ListView Margin="10,142,557.6,121.4"  ItemsSource="{Binding UsersInfoList, Mode=TwoWay}" SelectedItem="{Binding FocusUser, Mode=TwoWay}">
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <local1:SingleUserView/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListView>
+        <Grid Margin="256,0,-0.4,136">
+            <oxy:Plot x:Name="Plot1" Title="График Зависимости шагов и дней" Margin="187,114,38,-49.6" >
+                <oxy:Plot.Series>
+                    <oxy:LineSeries Title=""
+                            ItemsSource="{Binding DaysAndStepsPoints}"
+                            Color="Red" 
+                             />
+                    <oxy:LineSeries Title=""
+                            ItemsSource="{Binding MaxSteps}"
+                            Color="Green" 
+                            MarkerFill="Green" 
+                            MarkerType="Circle"
+                             />
+                    <oxy:LineSeries Title=""
+                            ItemsSource="{Binding MinSteps}"
+                            Color="Blue" 
+                            MarkerFill="Blue" 
+                            MarkerType="Circle"
+                             />
+                </oxy:Plot.Series>
+                <oxy:Plot.Axes>
+                    <oxy:LinearAxis Title="Дни"
+                            MajorGridlineStyle="Dash"
+                            Position="Bottom"
+                             AbsoluteMaximum="30"
+                             AbsoluteMinimum="0"/>
+                    <oxy:LinearAxis Title="Кол-во шагов"
+                            MajorGridlineStyle="Dash"
+                            Position="Left" 
+                            AbsoluteMinimum="0"
+                            AbsoluteMaximum="200000"
+                            />
+                </oxy:Plot.Axes>
+            </oxy:Plot>
+        </Grid>
+        <Button Content="Вывести график" HorizontalAlignment="Left" Margin="10,0,0,92.4" VerticalAlignment="Bottom" Width="426" Command="{Binding DrawGraph}"/>
+        <Button Command="{Binding SaveInfo}" Content="Сохранить инфу выбранного пользователя" HorizontalAlignment="Left" Margin="10,0,0,17.4" VerticalAlignment="Bottom" Width="426"/>
+        <ComboBox HorizontalAlignment="Left" Text="{Binding SelectedExtended, Mode=TwoWay}" Margin="321,0,0,68.4" VerticalAlignment="Bottom" Width="115" SelectedIndex="0">
+            <TextBlock Text="JSON"></TextBlock>
+            <TextBlock Text="XML"></TextBlock>
+            <TextBlock Text="CSV"></TextBlock>
+        </ComboBox>
+        <Label Content="Расширение для сохранения:" HorizontalAlignment="Left" Margin="10,0,0,65.4" VerticalAlignment="Bottom"/>
+        <Label Content="Имя файла:" HorizontalAlignment="Left" Margin="10,0,0,41.4" VerticalAlignment="Bottom"/>
+        <TextBox HorizontalAlignment="Left" Height="20" Margin="84,0,0,45.4" TextWrapping="Wrap" Text="{Binding NameSavedFile, Mode=TwoWay}" VerticalAlignment="Bottom" Width="352"/>
+    </Grid>
+
+</Window>
