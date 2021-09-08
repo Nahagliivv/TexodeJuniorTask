@@ -19,10 +19,10 @@ namespace JunTest.ViewModel
 {
     class MainWindowViewModel : ViewModelBase
     {
-        public ObservableCollection<CommonUserInfo> UsersInfoList {get;set;}
-        public ObservableCollection<DataPoint> DaysAndStepsPoints { get; set; }
-        public ObservableCollection<DataPoint> MaxSteps { get; set; }
-        public ObservableCollection<DataPoint> MinSteps { get; set; }
+        public ObservableCollection<CommonUserInfo> UsersInfoList {get;set;} //лист с информацией о пользователях
+        public ObservableCollection<DataPoint> DaysAndStepsPoints { get; set; } //точки всего графика
+        public ObservableCollection<DataPoint> MaxSteps { get; set; }//точка с максимальным значением шагов за период
+        public ObservableCollection<DataPoint> MinSteps { get; set; }//точка с минимальным значением шагов за период
         public string NameSavedFile { get; set; } = "";
         public CommonUserInfo FocusUser { get; set; }
         public string SelectedExtended { get; set; } = "";
@@ -107,6 +107,7 @@ namespace JunTest.ViewModel
                 {
                     x.Abort();
                 }
+                threads.Clear();
             });
         }
         public ICommand DrawGraph
