@@ -11,12 +11,16 @@
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <local1:SingleUserView/>
+                    <local1:SingleUserView>
+                        <UserControl.InputBindings>
+                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}, Path= DataContext.DrawGraph}" />
+                        </UserControl.InputBindings>
+                    </local1:SingleUserView>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListView>
         <Grid Margin="256,0,-0.4,136">
-            <oxy:Plot x:Name="Plot1" Title="График Зависимости шагов и дней" Margin="187,114,38,-49.6" >
+            <oxy:Plot x:Name="Plot1" Margin="187,114,38,-49.6" Title="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}, Path= DataContext.FocusUser.User, StringFormat=Количество шагов по дням для {0}}">
                 <oxy:Plot.Series>
                     <oxy:LineSeries Title=""
                             ItemsSource="{Binding DaysAndStepsPoints}"

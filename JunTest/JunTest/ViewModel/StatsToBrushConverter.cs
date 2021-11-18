@@ -14,18 +14,20 @@ namespace JunTest.ViewModel
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
 
-            var avgStep = (int)values[0];
-            var minStep = (int)values[1];
-            var maxStep = (int)values[2];
+            if (values[0] is int avgStep && values[1] is int minStep && values[2] is int maxStep)
+            {
+                var minStat = avgStep - minStep;
+                var maxStat = maxStep - avgStep;
+
+                var checkedProcent = (avgStep / 100) * 20;
 
 
-            var minStat = avgStep - minStep;
-            var maxStat = maxStep - avgStep;
+                return (checkedProcent < minStat || maxStat > checkedProcent) ? Brushes.Red : Brushes.White;
+            }
+            else return Brushes.White;
 
-            var checkedProcent = (avgStep / 100) * 20;
 
 
-            return (checkedProcent < minStat || maxStat > checkedProcent) ? Brushes.Red : Brushes.White;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using JunTest.Model;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Threading;
 using System.Linq;
 using OxyPlot;
 using System.Windows.Input;
-using System.Windows.Media;
-using Microsoft.Win32;
-using Microsoft.WindowsAPICodePack.Dialogs;
 using System.Xml.Serialization;
-using System.Windows.Forms;
+using Splat;
+
 namespace JunTest.ViewModel
 {
     class MainWindowViewModel : ViewModelBase
@@ -24,18 +20,27 @@ namespace JunTest.ViewModel
         public ObservableCollection<DataPoint> MaxSteps { get; set; }//точка с максимальным значением шагов за период
         public ObservableCollection<DataPoint> MinSteps { get; set; }//точка с минимальным значением шагов за период
         public string NameSavedFile { get; set; } = "";
+
         public CommonUserInfo FocusUser { get; set; }
         public string SelectedExtended { get; set; } = "";
         List<Thread> threads;
-        public MainWindowViewModel()
+
+        private IDialogService dialogService;
+        public MainWindowViewModel(IDialogService dialogService)
         {
             threads = new List<Thread>();
             DaysAndStepsPoints = new ObservableCollection<DataPoint>();
             UsersInfoList = new ObservableCollection<CommonUserInfo>();
             MinSteps = new ObservableCollection<DataPoint>();
             MaxSteps = new ObservableCollection<DataPoint>();
-           DeserializeUsers();
+            DeserializeUsers();
             ClearThreads();
+
+            this.dialogService = dialogService;
+        }
+
+        public MainWindowViewModel() : this(Locator.Current.GetService<IDialogService>())
+        {
 
         }
          void DeserializeUsers()
@@ -109,7 +114,7 @@ namespace JunTest.ViewModel
         }
         void DrawGrph() //рисование графика
         {
-            if(FocusUser == null) { MessageBox.Show("Для отображения графика нужно выбрать пользователя из таблицы"); return; }
+            if(FocusUser == null) { dialogService.ShowMessage("Для отображения графика нужно выбрать пользователя из таблицы"); return; }
             DaysAndStepsPoints.Clear();
             MinSteps.Clear();
             MaxSteps.Clear();
@@ -131,15 +136,18 @@ namespace JunTest.ViewModel
         }
         void SavInf()// сохранение информации выбранного юзера
         {
-            if (SelectedExtended == "" || FocusUser == null || NameSavedFile =="") { MessageBox.Show("Для сохранения файла необходимо выбрать формат, имя и пользователя из таблицы"); return; }
-            var dlg = new FolderBrowserDialog();
+            if (SelectedExtended == "" || FocusUser == null || NameSavedFile =="") { dialogService.ShowMessage("Для сохранения файла необходимо выбрать формат, имя и пользователя из таблицы"); return; }
+             
 
-            if (dlg.ShowDialog() == DialogResult.OK)
+            if (dialogService.OpenFolder() is string folder)
             {
                 try
                 {
-                    if (dlg.SelectedPath == "" || !System.IO.File.Exists(dlg.SelectedPath) && !System.IO.Directory.Exists(dlg.SelectedPath)) { MessageBox.Show("Файл невозможно сохранить, т.к. не выбран путь или нет разрешения на сохранение в выбранном директории"); return; }
-                    var folder = dlg.SelectedPath;
+                    if (folder == "" || !File.Exists(folder) && !Directory.Exists(folder)) 
+                    {
+                        dialogService.ShowMessage("Файл невозможно сохранить, т.к. не выбран путь или нет разрешения на сохранение в выбранном директории");
+                        return; 
+                    }
                     var savedUser = new SerializeUserInfo() { AvgSteps = FocusUser.AvgSteps, MaxSteps = FocusUser.MaxSteps, MinSteps = FocusUser.MinSteps, Rank = FocusUser.Rank, Status = FocusUser.Status, User = FocusUser.User };
                     if (SelectedExtended == "XML")
                     {
@@ -165,7 +173,7 @@ namespace JunTest.ViewModel
 
                     }
                 }
-                catch { MessageBox.Show("Не удалось сохранить файл"); return; }
+                catch { dialogService.ShowMessage("Не удалось сохранить файл"); return; }
             }
 
             }
