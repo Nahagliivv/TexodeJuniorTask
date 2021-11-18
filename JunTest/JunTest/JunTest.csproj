@@ -115,6 +115,7 @@
     <Compile Include="Model\UserInfo.cs" />
     <Compile Include="ViewModel\DelegateCommand.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\StatsToBrushConverter.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="View\SingleUserView.xaml.cs">
       <DependentUpon>SingleUserView.xaml</DependentUpon>
