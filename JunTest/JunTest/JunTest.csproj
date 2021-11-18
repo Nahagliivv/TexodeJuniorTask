@@ -165,6 +165,36 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Days\day1.json" />
+    <None Include="Days\day10.json" />
+    <None Include="Days\day11.json" />
+    <None Include="Days\day12.json" />
+    <None Include="Days\day13.json" />
+    <None Include="Days\day14.json" />
+    <None Include="Days\day15.json" />
+    <None Include="Days\day16.json" />
+    <None Include="Days\day17.json" />
+    <None Include="Days\day18.json" />
+    <None Include="Days\day19.json" />
+    <None Include="Days\day2.json" />
+    <None Include="Days\day20.json" />
+    <None Include="Days\day21.json" />
+    <None Include="Days\day22.json" />
+    <None Include="Days\day23.json" />
+    <None Include="Days\day24.json" />
+    <None Include="Days\day25.json" />
+    <None Include="Days\day26.json" />
+    <None Include="Days\day27.json" />
+    <None Include="Days\day28.json" />
+    <None Include="Days\day29.json" />
+    <None Include="Days\day3.json" />
+    <None Include="Days\day30.json" />
+    <None Include="Days\day4.json" />
+    <None Include="Days\day5.json" />
+    <None Include="Days\day6.json" />
+    <None Include="Days\day7.json" />
+    <None Include="Days\day8.json" />
+    <None Include="Days\day9.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
