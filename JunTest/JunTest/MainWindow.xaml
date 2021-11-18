@@ -13,7 +13,7 @@
                 <DataTemplate>
                     <local1:SingleUserView>
                         <UserControl.InputBindings>
-                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}, Path= DataContext.DrawGraph}" />
+                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}, Path= DataContext.DrawGraphCommand}" />
                         </UserControl.InputBindings>
                     </local1:SingleUserView>
                 </DataTemplate>
@@ -54,8 +54,8 @@
                 </oxy:Plot.Axes>
             </oxy:Plot>
         </Grid>
-        <Button Content="Вывести график" HorizontalAlignment="Left" Margin="10,0,0,92.4" VerticalAlignment="Bottom" Width="426" Command="{Binding DrawGraph}"/>
-        <Button Command="{Binding SaveInfo}" Content="Сохранить инфу выбранного пользователя" HorizontalAlignment="Left" Margin="10,0,0,17.4" VerticalAlignment="Bottom" Width="426"/>
+        <Button Content="Вывести график" HorizontalAlignment="Left" Margin="10,0,0,92.4" VerticalAlignment="Bottom" Width="426" Command="{Binding DrawGraphCommand}"/>
+        <Button Command="{Binding SaveInformationCommand}" Content="Сохранить инфу выбранного пользователя" HorizontalAlignment="Left" Margin="10,0,0,17.4" VerticalAlignment="Bottom" Width="426"/>
         <ComboBox HorizontalAlignment="Left" Text="{Binding SelectedExtended, Mode=TwoWay}" Margin="321,0,0,68.4" VerticalAlignment="Bottom" Width="115" SelectedIndex="0">
             <TextBlock Text="JSON"></TextBlock>
             <TextBlock Text="XML"></TextBlock>

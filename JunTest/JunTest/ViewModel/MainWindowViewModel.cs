@@ -10,6 +10,7 @@ using OxyPlot;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using Splat;
+using System;
 
 namespace JunTest.ViewModel
 {
@@ -45,23 +46,32 @@ namespace JunTest.ViewModel
         }
          void DeserializeUsers()
         {
+            var currentDir = Environment.CurrentDirectory;
 
-           var allUsersText = File.ReadAllText(@"Days\day1.json");
-           foreach(var x in JsonConvert.DeserializeObject<ObservableCollection<CommonUserInfo>>(allUsersText))
+            var allUsersText = File.ReadAllText(Path.GetFullPath(Path.Combine(currentDir, @"../../Days/day1.json")));
+
+           foreach(var x in JsonConvert.DeserializeObject<List<CommonUserInfo>>(allUsersText))
             {
                
                 Thread thr = new Thread(() =>
                 {
                     while (true)
                     {
-                        if (!File.Exists(@"Days\day" + x.CurrentDay + ".json")) { break; }
+                        string targetFileName = Path.GetFullPath(Path.Combine(currentDir, $@"../../Days/day{x.CurrentDay}.json"));
+                        if (!File.Exists(targetFileName)) 
+                        {
+                            break;
+                        }
                         string allUsersTextSearch;
                         try
                         {
-                            allUsersTextSearch = File.ReadAllText(@"Days\day" + x.CurrentDay + ".json");
+                            allUsersTextSearch = File.ReadAllText(targetFileName);
                         }
-                        catch { continue; }
-                        foreach (var z in JsonConvert.DeserializeObject<ObservableCollection<UserInfo>>(allUsersTextSearch))
+                        catch
+                        {
+                            continue;
+                        }
+                        foreach (var z in JsonConvert.DeserializeObject<List<UserInfo>>(allUsersTextSearch))
                         {
                             if (x.User == z.User)
                             {
@@ -105,16 +115,15 @@ namespace JunTest.ViewModel
                 threads.Clear();
             });
         }
-        public ICommand DrawGraph
+        public ICommand DrawGraphCommand => new DelegateCommand(DrawGraph);
+
+        void DrawGraph() //рисование графика
         {
-            get
+            if (FocusUser is null)
             {
-                return new DelegateCommand(() => { DrawGrph(); });
+                dialogService.ShowMessage("Для отображения графика нужно выбрать пользователя из таблицы");
+                return; 
             }
-        }
-        void DrawGrph() //рисование графика
-        {
-            if(FocusUser == null) { dialogService.ShowMessage("Для отображения графика нужно выбрать пользователя из таблицы"); return; }
             DaysAndStepsPoints.Clear();
             MinSteps.Clear();
             MaxSteps.Clear();
@@ -127,14 +136,9 @@ namespace JunTest.ViewModel
             MaxSteps.Add(new DataPoint(maxstepsday.Day, maxstepsday.Steps));
             MinSteps.Add(new DataPoint(minstepsday.Day, minstepsday.Steps));
         }
-        public ICommand SaveInfo
-        {
-            get
-            {
-                return new DelegateCommand(() => { SavInf(); });
-            }
-        }
-        void SavInf()// сохранение информации выбранного юзера
+        public ICommand SaveInformationCommand => new DelegateCommand(SaveInformation);
+         
+        void SaveInformation()// сохранение информации выбранного юзера
         {
             if (SelectedExtended == "" || FocusUser == null || NameSavedFile =="") { dialogService.ShowMessage("Для сохранения файла необходимо выбрать формат, имя и пользователя из таблицы"); return; }
              
