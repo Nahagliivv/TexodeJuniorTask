@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Splat;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,10 @@ namespace JunTest
     /// </summary>
     public partial class App : Application
     {
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            Locator.CurrentMutable.Register<ViewModel.IDialogService>(() => new ViewModel.DialogService());
+        }
     }
 }
