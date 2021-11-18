@@ -3,10 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:JunTest.View"
-            mc:Ignorable="d" Height="81.348" Width="425.467">
+             xmlns:local="clr-namespace:JunTest.View" xmlns:viewmodel="clr-namespace:JunTest.ViewModel"
+             mc:Ignorable="d" Height="81.348" Width="425.467">
+    <UserControl.Resources>
+        <viewmodel:StatsToBrushConverter x:Key="statsToBrushConverter"/>
+    </UserControl.Resources>
     <Border BorderBrush="Black" BorderThickness="1">
-        <Grid Background="{Binding StatusColor}">
+        <Grid>
+            <Grid.Background>
+                <MultiBinding Converter="{StaticResource statsToBrushConverter}">
+                    <Binding Path="AvgSteps"></Binding>
+                    <Binding Path="MinSteps"></Binding>
+                    <Binding Path="MaxSteps"></Binding>
+                </MultiBinding>
+            </Grid.Background>
             <Label Content="ФИО:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
             <Label Content="Максимум шагов:" HorizontalAlignment="Left" Margin="10,44,0,0" VerticalAlignment="Top"/>
             <Label Content="Минимум шагов:" HorizontalAlignment="Left" Margin="226,10,0,0" VerticalAlignment="Top"/>

@@ -71,17 +71,7 @@ namespace JunTest.ViewModel
                     x.MaxSteps = x.AllUserInfo.Max(y => y.Steps);
                     x.MinSteps = x.AllUserInfo.Min(y => y.Steps);
                     x.AvgSteps = (int)x.AllUserInfo.Average(y => y.Steps);
-                    var checkedProcent = (x.AvgSteps / 100) * 20;
-                    var MinStat = x.AvgSteps - x.MinSteps;
-                    var MaxStat = x.MaxSteps - x.AvgSteps;
-                    if (checkedProcent < MinStat || MaxStat > checkedProcent)
-                    {
-                        x.StatusColor = Brushes.Red;
-                    }
-                    else
-                    {
-                        x.StatusColor = Brushes.White;
-                    }
+                   
                     UsersInfoList.Add(x);
                 });
                 thr.IsBackground = true;
@@ -155,20 +145,20 @@ namespace JunTest.ViewModel
                     {
                         XmlSerializer formatter = new XmlSerializer(typeof(SerializeUserInfo));
 
-                        using (FileStream fs = new FileStream(folder + NameSavedFile + ".xml", FileMode.OpenOrCreate))
+                        using (FileStream fs = new FileStream(Path.Combine(folder, NameSavedFile + ".xml"), FileMode.OpenOrCreate))
                         {
                             formatter.Serialize(fs, savedUser);
                         }
                     }
                     if (SelectedExtended == "CSV")
                     {
-                        StreamWriter myOutputStream = new StreamWriter(folder + NameSavedFile + ".csv");
+                        StreamWriter myOutputStream = new StreamWriter(Path.Combine(folder, NameSavedFile + ".csv"));
                         myOutputStream.WriteLine(savedUser.ToString());
                         myOutputStream.Close();
                     }
                     if (SelectedExtended == "JSON")
                     {
-                        using (FileStream fs = new FileStream(folder + NameSavedFile + ".json", FileMode.OpenOrCreate))
+                        using (FileStream fs = new FileStream(Path.Combine(folder,NameSavedFile + ".json"), FileMode.OpenOrCreate))
                         {
                             System.Text.Json.JsonSerializer.SerializeAsync<SerializeUserInfo>(fs, savedUser);
                         }

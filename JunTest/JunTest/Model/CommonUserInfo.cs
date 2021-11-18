@@ -17,12 +17,11 @@ namespace JunTest.Model
         public int MinSteps { get; set; }
         public int MaxSteps { get; set; }
         public int CurrentDay;
-        public Brush StatusColor { get; set; }
         public CommonUserInfo()
         {
             AllUserInfo = new List<UserInfo>();
             CurrentDay = 1;
-            StatusColor = Brushes.Red;
+          
         }
     }
 }
